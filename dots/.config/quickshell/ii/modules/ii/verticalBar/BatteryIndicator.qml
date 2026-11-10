@@ -43,13 +43,12 @@ MouseArea {
 
                 MaterialSymbol {
                     id: boltIcon
+                    objectName: "powerSourceIcon"
                     anchors.horizontalCenter: parent.horizontalCenter
                     fill: 1
                     text: {
-                        if (batteryProgress.value == 1) {
-                            return "check";
-                        } else if (root.isCharging) {
-                            return "bolt";
+                        if (root.isPluggedIn) {
+                            return root.isCharging ? "bolt" : "power";
                         } else {
                             return Icons.getBatteryIcon(Battery.percentage * 100);
                         }

@@ -13,46 +13,30 @@ MouseArea {
     readonly property real percentage: Battery.percentage
     readonly property bool isLow: percentage <= Config.options.battery.low / 100
 
-    implicitWidth: batteryProgress.implicitWidth
+    implicitWidth: indicatorRow.implicitWidth
     implicitHeight: Appearance.sizes.barHeight
 
     hoverEnabled: !Config.options.bar.tooltips.clickToShow
 
-    ClippedProgressBar {
-        id: batteryProgress
+    RowLayout {
+        id: indicatorRow
         anchors.centerIn: parent
-        value: percentage
-        highlightColor: (isLow && !isCharging) ? Appearance.m3colors.m3error : Appearance.colors.colOnSecondaryContainer
+        spacing: 4
 
-        Item {
-            anchors.centerIn: parent
-            width: batteryProgress.valueBarWidth
-            height: batteryProgress.valueBarHeight
+        MaterialSymbol {
+            objectName: "powerSourceIcon"
+            Layout.alignment: Qt.AlignVCenter
+            fill: 1
+            text: root.isCharging ? "bolt" : "power"
+            iconSize: Appearance.font.pixelSize.normal
+            visible: root.isPluggedIn
+        }
 
-            RowLayout {
-                anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    bottom: parent.bottom
-                    bottomMargin: (parent.height - height) / 2
-                }
-                spacing: 0
-
-                MaterialSymbol {
-                    id: boltIcon
-                    Layout.alignment: Qt.AlignVCenter
-                    Layout.leftMargin: -2
-                    Layout.rightMargin: -2
-                    fill: 1
-                    text: "bolt"
-                    iconSize: Appearance.font.pixelSize.smaller
-                    visible: isCharging && percentage < 1 // TODO: animation
-                }
-                StyledText {
-                    Layout.alignment: Qt.AlignVCenter
-                    font: batteryProgress.font
-                    text: batteryProgress.text
-                }
-            }
+        ClippedProgressBar {
+            id: batteryProgress
+            Layout.alignment: Qt.AlignVCenter
+            value: root.percentage
+            highlightColor: (root.isLow && !root.isCharging) ? Appearance.m3colors.m3error : Appearance.colors.colOnSecondaryContainer
         }
     }
 

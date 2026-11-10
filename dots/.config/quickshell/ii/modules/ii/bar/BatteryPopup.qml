@@ -19,6 +19,12 @@ StyledPopup {
         }
 
         StyledPopupValueRow {
+            icon: Battery.isPluggedIn ? "power" : "battery_android_full"
+            label: Translation.tr("Power source:")
+            value: Battery.isPluggedIn ? Translation.tr("Plugged in") : Translation.tr("On battery")
+        }
+
+        StyledPopupValueRow {
             visible: {
                 let timeValue = Battery.isCharging ? Battery.timeToFull : Battery.timeToEmpty;
                 let power = Battery.energyRate;
